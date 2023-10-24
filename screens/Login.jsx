@@ -1,3 +1,4 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useEffect, useState } from "react";
 import {
   Alert,
@@ -9,16 +10,19 @@ import {
   TextInput,
   View,
 } from "react-native";
-import * as SQLite from "expo-sqlite";
+import { auth } from "../FirebaseConfig";
+// import * as SQLite from "expo-sqlite";
 
 export default function Login({ navigation }) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isLogging, setIsLogging] = useState(false);
-  const db = SQLite.openDatabase("user.db");
+  const [isTapped , setIsTapped] = useState(false)
+  // const db = SQLite.openDatabase("user.db");
 
   function validateForm() {
+   
     let error = {};
     if (!username) {
       error.username = "username incorrect";
@@ -33,40 +37,24 @@ export default function Login({ navigation }) {
     validateForm();
   }, [username, password]);
 
-  function login() {
+  login = async () => {
     setIsLogging(true);
-    db.transaction((tx) => {
-      tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS user ( username VARCHAR(45) , password VARCHAR(45) )"
-      );
-    });
-
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM user WHERE username = ? AND password =?",
-        [username, password],
-
-        (tx, rs) => {
-          console.log(rs.rows._array);
-          if (rs.rows.length >= 1) {
-            Alert.alert("logged in successful");
-            console.log("logged in");
-            navigation.navigate("home", {
-              username: username,
-            });
-          } else {
-            Alert.alert("invalid login");
-          }
-        },
-        (tx, rs) => {
-          console.log(rs);
-        }
-      );
-    });
-
-    setUserName("");
+    try{
+      const response = await signInWithEmailAndPassword(auth,username,password);
+      console.log(response);
+      Alert.alert("Login Successful",`Welcome ${username}`)
+      navigation.navigate('home',{
+        username : username
+      });
+    }catch(err){
+      console.log(err);
+      Alert.alert('Invalid Credentials','try again')
+    }finally{
+      setUserName("");
     setPassword("");
     setIsLogging(false);
+    }
+    
   }
 
   return (
@@ -77,9 +65,10 @@ export default function Login({ navigation }) {
           style={styles.InputFields}
           placeholder="enter your username"
           value={username}
+          onTouchStart={setIsTapped}
           onChangeText={setUserName}
         />
-        {errors?.username && (
+        { (isTapped && errors?.username) && (
           <Text style={styles.Error}>*{errors?.username}</Text>
         )}
         <Text style={styles.Label}>Password </Text>
@@ -87,10 +76,11 @@ export default function Login({ navigation }) {
           style={styles.InputFields}
           value={password}
           placeholder="enter your password"
+          onTouchStart={setIsTapped}
           onChangeText={setPassword}
           secureTextEntry
         />
-        {errors?.password && (
+        { (isTapped && errors?.password) && (
           <Text style={styles.Error}>*{errors?.password}</Text>
         )}
         <View style={styles.Button}>

@@ -9,13 +9,15 @@ import {
   View,
 } from "react-native";
 import * as SQLite from "expo-sqlite";
+import { auth } from "../FirebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function Register({ navigation }) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isLogging, setIsLogging] = useState(false);
-  const db = SQLite.openDatabase("user.db");
+  // const db = SQLite.openDatabase("user.db");
 
   function validateForm() {
     let error = {};
@@ -32,52 +34,20 @@ export default function Register({ navigation }) {
     validateForm();
   }, [username, password]);
 
-  register = () => {
-    db.transaction((tx) => {
-        tx.executeSql(
-          "CREATE TABLE IF NOT EXISTS user ( username VARCHAR(45) , password VARCHAR(45) )"
-        );
-    });
-
-    console.log("register");
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM user WHERE username = ?",
-        [username],
-        (tx, rs) => {
-            console.log("inside");
-          try{
-            console.log("result");
-          console.log(rs);
-          if (rs.rows.length !== 0) {
-            Alert.alert("username already found");
-            return;
-          }
-           else {
-            tx.executeSql(
-              "INSERT INTO user VALUES(?,?)",
-              [username, password],
-              (tx, rs) => {
-                if (rs.rowsAffected > 0) {
-                  Alert.alert("registered successfully");
-                  navigation.navigate("login");
-                  setUserName("");
-                  setPassword("");
-                } else {
-                  Alert.alert("oops something went wrong 😞");
-                }
-              }
-            );
-          }
-          }catch(err){
-            console.log(err);
-          }
-        } ,
-        (tx , err) => {
-            console.log(err);
-        }
-      );
-    });
+  register = async () => {
+    try{
+      const response = await createUserWithEmailAndPassword(auth,username,password);
+      console.log(response);
+      alert('registered successfully')
+      navigation.navigate('login')
+    
+    }catch(err){
+      console.log(err.code);
+      if(err.code === 'auth/email-already-in-use'){
+        Alert.alert('user already found','try login with the username');
+        navigation.navigate('login')
+      }
+    }
   };
 
   return (
@@ -106,7 +76,9 @@ export default function Register({ navigation }) {
         )}
         <View style={styles.Button}>
           <Button
-           disabled={(isLogging || errors?.username || errors?.password )? true : false }
+            disabled={
+              isLogging || errors?.username || errors?.password ? true : false
+            }
             title={isLogging ? "registering..." : "register"}
             onPress={() => {
               register();
