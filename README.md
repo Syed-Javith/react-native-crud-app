@@ -11,7 +11,7 @@ to run the app
 - if you want to change your password you can change it after logging in and pressing the icon on top right
 
 ![log](/screenshots/i1.jpg)
-![alt text](https://github.com/Syed-Javith/react-native-crud-app/blob/master/screenshots/i1.jpg)
+![alt text](https://github.com/Syed-Javith/react-native-crud-app/blob/master/screenshots/i1.jpg?raw=true)
 ![log](/screenshots/i2.jpg)
 ![log](/screenshots/i3.jpg)
 ![log](/screenshots/i4.jpg)
