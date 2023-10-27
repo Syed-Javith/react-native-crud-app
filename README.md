@@ -12,6 +12,7 @@ to run the app
  - to install expo into your system use command **npm install -g expo-cli**
 
 # About App 
-- while registering for use any email and password
-- while logging provide valid credentials
-- if you want to change your password you can change it after logging in and pressing the icon on top right
+- To Register into app use any email and password
+- To Login provide valid credentials
+- If you want to change your password you can change it after logging in and pressing the icon on top right
+- You can also logout from
