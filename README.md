@@ -6,5 +6,6 @@ to run the app
   **npm run**
 
 # About App 
--while registering for use any email and password
--while logging provide valid credentials
+- while registering for use any email and password
+- while logging provide valid credentials
+- if you want to change your password you can change it after logging in and pressing the icon on top right
