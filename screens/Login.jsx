@@ -11,21 +11,26 @@ import {
   View,
 } from "react-native";
 import { auth } from "../FirebaseConfig";
-// import * as SQLite from "expo-sqlite";
 
 export default function Login({ navigation }) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isLogging, setIsLogging] = useState(false);
-  const [isTapped , setIsTapped] = useState(false)
-  // const db = SQLite.openDatabase("user.db");
+  const [isTapped , setIsTapped] = useState(false);
 
   function validateForm() {
    
     let error = {};
-    if (!username) {
-      error.username = "username incorrect";
+    
+    if(username.split('@').length === 1  || username.split('@')[1].length === 0){
+      error.username = 'username should be a valid email'
+    }
+    if(username.indexOf('@') === -1 || username.indexOf('.') === -1){
+      error.username = 'username should be a valid email'
+    }
+    if (!username ) {
+      error.username = "username required";
     }
     if (!password || password.length < 6) {
       error.password = "password incorrect";
@@ -37,17 +42,17 @@ export default function Login({ navigation }) {
     validateForm();
   }, [username, password]);
 
-  login = async () => {
+  const login = async () => {
     setIsLogging(true);
     try{
       const response = await signInWithEmailAndPassword(auth,username,password);
-      console.log(response);
+      // console.log(response);
       Alert.alert("Login Successful",`Welcome ${username}`)
       navigation.navigate('home',{
         username : username
       });
     }catch(err){
-      console.log(err);
+      // console.log(err);
       Alert.alert('Invalid Credentials','try again')
     }finally{
       setUserName("");

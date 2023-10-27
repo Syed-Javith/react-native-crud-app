@@ -8,7 +8,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import * as SQLite from "expo-sqlite";
 import { auth } from "../FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -17,32 +16,41 @@ export default function Register({ navigation }) {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isLogging, setIsLogging] = useState(false);
-  // const db = SQLite.openDatabase("user.db");
+  const [isTapped , setIsTapped] = useState(false);
 
   function validateForm() {
+   
     let error = {};
-    if (!username) {
-      error.username = "username incorrect";
+    
+    if(username.split('@').length === 1  || username.split('@')[1].length === 0){
+      error.username = 'username should be a valid email'
+    }
+    if(username.indexOf('@') === -1 || username.indexOf('.') === -1){
+      error.username = 'username should be a valid email'
+    }
+    if (!username ) {
+      error.username = "username required";
     }
     if (!password || password.length < 6) {
       error.password = "password incorrect";
     }
     setErrors(error);
   }
-
+  
   useEffect(() => {
     validateForm();
   }, [username, password]);
 
-  register = async () => {
+  const register = async () => {
     try{
       const response = await createUserWithEmailAndPassword(auth,username,password);
-      console.log(response);
+      // console.log(response);
       alert('registered successfully')
       navigation.navigate('login')
+      setIsLogging(false)
     
     }catch(err){
-      console.log(err.code);
+      // console.log(err.code);
       if(err.code === 'auth/email-already-in-use'){
         Alert.alert('user already found','try login with the username');
         navigation.navigate('login')
@@ -58,9 +66,10 @@ export default function Register({ navigation }) {
           style={styles.InputFields}
           placeholder="enter your username"
           value={username}
+          onTouchStart={setIsTapped}
           onChangeText={setUserName}
         />
-        {errors?.username && (
+        { (isTapped && errors?.username) && (
           <Text style={styles.Error}>*{errors?.username}</Text>
         )}
         <Text style={styles.Label}>Password </Text>
@@ -69,9 +78,10 @@ export default function Register({ navigation }) {
           value={password}
           placeholder="enter your password"
           onChangeText={setPassword}
+          onTouchStart={setIsTapped}
           secureTextEntry
         />
-        {errors?.password && (
+        { (isTapped && errors?.password) && (
           <Text style={styles.Error}>*{errors?.password}</Text>
         )}
         <View style={styles.Button}>

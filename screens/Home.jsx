@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Button, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { auth } from '../FirebaseConfig';
 import { updatePassword } from 'firebase/auth';
 
@@ -77,6 +77,8 @@ export default function Home({ navigation, route, isSidebarVisible }) {
       </View>
 
       {/* // side bar */}
+
+      <Image source={require('../assets/success.webp')} style={styles.Image} />
     </View>
   );
 }
@@ -133,5 +135,10 @@ const styles = StyleSheet.create({
     width : '100%',
     textAlign : 'center',
     padding : 5
+  },
+  Image : {
+    height : '80%' ,
+    width : '90%',
+    alignSelf : 'center'
   }
 });
