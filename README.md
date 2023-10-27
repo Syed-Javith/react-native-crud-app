@@ -1,3 +1,7 @@
+# Tech Stack
+  - React Native
+  - Firebase
+  
 # react-native-crud-app
 to run the app
  - use nodejs and run
