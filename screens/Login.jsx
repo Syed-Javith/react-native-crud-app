@@ -1,6 +1,7 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Button,
   Pressable,
@@ -106,6 +107,9 @@ export default function Login({ navigation }) {
           <Text style={styles.RegisterText}>If new user register here</Text>
         </Pressable>
       </View>
+      {
+        isLogging && <ActivityIndicator  size={'large'} color={'#0074d9'}/>
+      }
     </SafeAreaView>
   );
 }

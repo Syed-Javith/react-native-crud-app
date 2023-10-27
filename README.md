@@ -9,3 +9,8 @@ to run the app
 - while registering for use any email and password
 - while logging provide valid credentials
 - if you want to change your password you can change it after logging in and pressing the icon on top right
+
+![log](../../i1.jpg)
+![log](../../i2.jpg)
+![log](../../i3.jpg)
+![log](../../i4.jpg)

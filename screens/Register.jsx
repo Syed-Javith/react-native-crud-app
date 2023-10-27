@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
+  ActivityIndicatorBase,
   Alert,
   Button,
   SafeAreaView,
@@ -36,7 +38,7 @@ export default function Register({ navigation }) {
     }
     setErrors(error);
   }
-  
+
   useEffect(() => {
     validateForm();
   }, [username, password]);
@@ -59,6 +61,7 @@ export default function Register({ navigation }) {
   };
 
   return (
+          
     <SafeAreaView style={styles.container}>
       <View style={styles.Form}>
         <Text style={styles.Label}>Username </Text>
@@ -94,8 +97,12 @@ export default function Register({ navigation }) {
               register();
             }}
           />
+          
         </View>
       </View>
+      {
+        isLogging && <ActivityIndicator size={'small'} color={'#0074d9'}/>
+      }
     </SafeAreaView>
   );
 }
