@@ -1,8 +1,8 @@
 # react-native-crud-app
 to run the app
- use nodejs and run
+ - use nodejs and run
   **npm i**
- then start the app using(make sure you have installed expo) 
+ - then start the app using(make sure you have installed expo) 
   **npm run**
 
 # About App 
