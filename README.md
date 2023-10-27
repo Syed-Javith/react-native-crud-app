@@ -15,4 +15,4 @@ to run the app
 - To Register into app use any email and password
 - To Login provide valid credentials
 - If you want to change your password you can change it after logging in and pressing the icon on top right
-- You can also logout from
+- You can also logout from app
