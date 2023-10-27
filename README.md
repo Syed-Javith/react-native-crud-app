@@ -1,13 +1,15 @@
 # Tech Stack
   - React Native
   - Firebase
-  
+
 # react-native-crud-app
 to run the app
  - use nodejs and run
   **npm i**
  - then start the app using(make sure you have installed expo) 
   **npm run**
+
+ - to install expo into your system use command **npm install -g expo-cli**
 
 # About App 
 - while registering for use any email and password
